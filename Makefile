@@ -12,12 +12,12 @@ INSTALL_LIB_PATH = /usr/lib/
 
 #Compiler settings
 CC=gcc
-CFLAGS=-c -Wall
-LDFLAGS=
+CFLAGS=-c -Wall -ggdb
+LDFLAGS=-ggdb
 
 #Rules to find source code - NOTE: Look for a better way to scan directories. Nonrecursive works but is a bit ugly
-SOURCES=$(shell find src/ -type f -name '*.cpp') $(shell find src/ -type f -name '*.c')
-OBJECTS=$(patsubst %.cpp,obj/%.o,$(SOURCES))
+SOURCES=$(shell find src/ -type f -name '*.c')
+OBJECTS=$(patsubst %.c,obj/%.o,$(SOURCES))
 
 all: preprocess $(SOURCES) $(EXECUTABLE)
 
@@ -39,11 +39,11 @@ $(OBJECTS) : $(OBJ_DIR)
 
 $(OBJ_DIR):
 	-@mkdir -p $@
-
-$(OBJ_DIR)/%.o: %.cpp
+	
+$(OBJ_DIR)/%.o: %.c
 	-@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $< -o $@
-
+	
 #The preprocess rules will update the build number
 preprocess:
 	-@mkdir -p $(OUTPUT_DIR)

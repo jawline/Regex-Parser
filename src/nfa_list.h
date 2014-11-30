@@ -7,9 +7,10 @@ typedef struct nfa_list {
 	int currentSize;
 } nfa_list;
 
-void createNfaList(nfa_list* list, int maxSize);
-void startNfaList(nfa_list* list, nfa_state* state);
-void addNfaListState(nfa_list* list, nfa_state* state);
-void freeNfaList(nfa_list* list);
+void nfaListAllocate(nfa_list* list, int maxSize);
+void nfaListReset(nfa_list* list);
+void nfaListStart(nfa_list* list, nfa_state* state);
+void nfaListAddState(nfa_list* list, nfa_state* state);
+void nfaListFree(nfa_list* list);
 
 #endif //_NFA_LIST_DEF_H_
