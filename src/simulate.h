@@ -4,6 +4,6 @@
 #include "nfa_list.h"
 #include <stdbool.h>
 
-bool nfaMatches(nfa_state* nfa, char* string);
+bool nfaMatches(nfa_state* nfa, char const* targetString);
 
 #endif //_NFA_SIMULATE_H_
