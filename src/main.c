@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "nfa.h"
 #include "match.h"
+#include "parser.h"
 
 int main(int argc, char** argv) {
 
-	nfa_state* looped = nfaCreate('b', NULL, NULL);
-	nfa_state* end = nfaCreate(257, NULL, NULL);
-	nfa_state* inner = nfaCreate(256, looped, end);
-	looped->path = inner;
+	regex reg;
+	regexParse(&reg, "+a");
 
-	printf("%i\n", nfaMatches(looped, "bbb"));
-	nfaFree(looped);
+	printf("%i\n", nfaMatches(reg.start, "a"));
+
+	regexFree(&reg);
+
 	return 1;
 }
