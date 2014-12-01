@@ -9,6 +9,7 @@ void nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next)
 
 	for (i = 0; i < current->currentSize; i++) {
 		state = current->states[i];
+
 		if (state->target == c) {
 			nfaListAddState(next, state->path);
 		}

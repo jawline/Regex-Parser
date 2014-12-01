@@ -5,10 +5,22 @@
 
 int main(int argc, char** argv) {
 
-	regex reg;
-	regexParse(&reg, "+a");
 
-	printf("%i\n", nfaMatches(reg.start, "a"));
+	unsigned int i;
+
+	for (i = 0; i < argc; i++) {
+		printf("%s\n", argv[i]);
+	}
+
+	if (argc != 3) {
+		printf("Incorrect Usage\n");
+		return -1;
+	}
+
+	regex reg;
+	regexParse(&reg, argv[1]);
+
+	printf("%i\n", nfaMatches(reg.start, argv[2]));
 
 	regexFree(&reg);
 
