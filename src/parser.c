@@ -5,6 +5,8 @@
  *      Author: blake
  */
 #include "parser.h"
+#include "nfa_fragment.h"
+#include "fragment_stack.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -30,7 +32,7 @@ void push(nfa_list* list, nfa_state* state) {
 bool regexParse(regex* regexStructure, char const* input) {
 
 	nfa_list stateStack;
-	nfa_state *state, *other;
+	nfa_state *state, *other, *t1;
 
 	//Allocate a list to keep track of regex states
 	nfaListAllocate(&regexStructure->stateList, 1000);
@@ -45,6 +47,16 @@ bool regexParse(regex* regexStructure, char const* input) {
 			other = pop(&stateStack);
 			state->path = other;
 			push(&stateStack, state);
+			break;
+		case '|':
+			other = pop(&stateStack);
+			state = pop(&stateStack);
+			printf("%c %c\n", state->target, other->target);
+
+			t1 = nfaCreate(256, state, other);
+			nfaListAddState(&regexStructure->stateList, t1);
+
+			push(&stateStack, t1);
 			break;
 		case '+':
 			state = pop(&stateStack);
