@@ -1,0 +1,4 @@
+To compile type make
+
+To test try something like
+./bin/regex "\$ba.cc.|." "ab"

@@ -45,14 +45,24 @@ bool regexParse(regex* regexStructure, char const* input) {
 
 		switch (*input) {
 		case '.':
+
+			//Pop the two sides of the concat
 			t1 = nfaFragmentStackPop(&stateStack);
 			t2 = nfaFragmentStackPop(&stateStack);
+
+			//Patch the tail states on t1 to the start state on t2
 			nfaFragmentPatch(t1, t2);
+
+			//Create a new fragment using t2's tail states and t1's start states (The concat of both)
 			t3 = nfaFragmentCreate();
 			t3->start = t1->start;
 			fillTails(t3, t2);
+
+			//Free the two popped fragment
 			nfaFragmentFree(t1);
 			nfaFragmentFree(t2);
+
+			//Push the new one
 			nfaFragmentStackPush(&stateStack, t3);
 			break;
 		case '|':
