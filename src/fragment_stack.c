@@ -6,6 +6,7 @@
  */
 #include "fragment_stack.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void nfaFragmentStackAllocate(fragment_stack* stack, unsigned int max) {
 	stack->items = malloc(sizeof(fragment_stack*) * max);

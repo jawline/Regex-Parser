@@ -50,6 +50,7 @@ bool regexParse(regex* regexStructure, char const* input) {
 			nfaFragmentPatch(t1, t2);
 			t3 = nfaFragmentCreate();
 			t3->start = t1->start;
+			fillTails(t3, t2);
 			nfaFragmentFree(t1);
 			nfaFragmentFree(t2);
 			nfaFragmentStackPush(&stateStack, t3);
