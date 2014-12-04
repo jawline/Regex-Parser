@@ -14,74 +14,86 @@ bool empty(nfa_list* list) {
 	return list->currentSize == 0;
 }
 
-nfa_state* pop(nfa_list* list) {
-
-	if (!empty(list)) {
-		list->currentSize -= 1;
-		return list->states[list->currentSize];
-	}
-
-	return NULL;
+nfa_fragment* basicFragment(nfa_state* state) {
+	nfa_fragment* frag = nfaFragmentCreate();
+	frag->start = state;
+	nfaFragmentAddTail(frag, state);
+	return frag;
 }
 
-void push(nfa_list* list, nfa_state* state) {
-	list->states[list->currentSize] = state;
-	list->currentSize += 1;
+void fillTails(nfa_fragment* fragment, nfa_fragment* tails) {
+
+	unsigned int i;
+
+	for (i = 0; i < tails->tails.currentSize; i++) {
+		nfaFragmentAddTail(fragment, tails->tails.states[i]);
+	}
 }
 
 bool regexParse(regex* regexStructure, char const* input) {
 
-	nfa_list stateStack;
-	nfa_state *state, *other, *t1;
+	fragment_stack stateStack;
+	nfa_state *state;
+	nfa_fragment *t1, *t2, *t3;
 
 	//Allocate a list to keep track of regex states
 	nfaListAllocate(&regexStructure->stateList, 1000);
 
-	nfaListAllocate(&stateStack, 1000);
+	nfaFragmentStackAllocate(&stateStack, 100);
 
 	for (; *input; input++) {
 
 		switch (*input) {
 		case '.':
-			state = pop(&stateStack);
-			other = pop(&stateStack);
-			state->path = other;
-			push(&stateStack, state);
+			t1 = nfaFragmentStackPop(&stateStack);
+			t2 = nfaFragmentStackPop(&stateStack);
+			nfaFragmentPatch(t1, t2);
+			t3 = nfaFragmentCreate();
+			t3->start = t1->start;
+			nfaFragmentFree(t1);
+			nfaFragmentFree(t2);
+			nfaFragmentStackPush(&stateStack, t3);
 			break;
 		case '|':
-			other = pop(&stateStack);
-			state = pop(&stateStack);
-			printf("%c %c\n", state->target, other->target);
+			t1 = nfaFragmentStackPop(&stateStack);
+			t2 = nfaFragmentStackPop(&stateStack);
 
-			t1 = nfaCreate(256, state, other);
-			nfaListAddState(&regexStructure->stateList, t1);
+			state = nfaCreate(256, t1->start, t2->start);
+			nfaListAddState(&regexStructure->stateList, state);
 
-			push(&stateStack, t1);
-			break;
-		case '+':
-			state = pop(&stateStack);
+			t3 = nfaFragmentCreate();
+			t3->start = state;
+			fillTails(t3, t1);
+			fillTails(t3, t2);
 
-			other = nfaCreate(256, NULL, NULL);
-			nfaListAddState(&regexStructure->stateList, other);
-			other->alternative = state;
-			state->path = other;
+			nfaFragmentFree(t1);
+			nfaFragmentFree(t2);
+			nfaFragmentStackPush(&stateStack, t3);
 			break;
 		case '$':
 			state = nfaCreate(257, NULL, NULL);
 			nfaListAddState(&regexStructure->stateList, state);
-			push(&stateStack, state);
+			nfaFragmentStackPush(&stateStack, basicFragment(state));
 			break;
 		default:
 			state = nfaCreate(*input, NULL, NULL);
 			nfaListAddState(&regexStructure->stateList, state);
-			push(&stateStack, state);
+			nfaFragmentStackPush(&stateStack, basicFragment(state));
 			break;
 		}
 	}
 
-	regexStructure->start = pop(&stateStack);
+	t1 = nfaFragmentStackPop(&stateStack);
+	regexStructure->start = t1->start;
 
-	nfaListFree(&stateStack);
+	nfaFragmentFree(t1);
+
+	while ((t1 = nfaFragmentStackPop(&stateStack)) != NULL) {
+		printf("WARN: Stuff left in stack\n");
+		nfaFragmentFree(t1);
+	}
+
+	nfaFragmentStackFree(&stateStack);
 
 	return true;
 }

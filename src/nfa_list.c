@@ -4,7 +4,7 @@
 unsigned int listid = 0;
 
 void nfaListAllocate(nfa_list* list, int maxSize) {
-	list->states = (nfa_state**) malloc(sizeof(nfa_state*) * maxSize);
+	list->states = malloc(sizeof(nfa_state*) * maxSize);
 	nfaListReset(list);
 }
 

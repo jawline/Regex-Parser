@@ -17,4 +17,7 @@ typedef struct fragment_stack {
 void nfaFragmentStackAllocate(fragment_stack* stack, unsigned int max);
 void nfaFragmentStackFree(fragment_stack* stack);
 
+void nfaFragmentStackPush(fragment_stack* stack, nfa_fragment* item);
+nfa_fragment* nfaFragmentStackPop(fragment_stack* stack);
+
 #endif /* FRAGMENT_STACK_H_ */

@@ -11,5 +11,6 @@ typedef struct nfa_fragment {
 nfa_fragment* nfaFragmentCreate();
 void nfaFragmentFree(nfa_fragment* fragment);
 void nfaFragmentAddTail(nfa_fragment* fragment, nfa_state* state);
+void nfaFragmentPatch(nfa_fragment* fragment, nfa_fragment* end);
 
 #endif //_NFA_FRAGMENT_H_

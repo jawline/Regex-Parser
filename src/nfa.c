@@ -3,7 +3,7 @@
 
 nfa_state* nfaCreate(unsigned short split, nfa_state* path, nfa_state* alternative) {
 
-	nfa_state* construct = (nfa_state*) malloc(sizeof(nfa_state));
+	nfa_state* construct = malloc(sizeof(nfa_state));
 
 	construct->target = split;
 	construct->path = path;
