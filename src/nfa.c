@@ -1,7 +1,7 @@
 #include "nfa.h"
 #include <stdlib.h>
 
-nfa_state* nfaCreate(unsigned short split, nfa_state* path, nfa_state* alternative) {
+nfa_state* nfaStateCreate(unsigned short split, nfa_state* path, nfa_state* alternative) {
 
 	nfa_state* construct = malloc(sizeof(nfa_state));
 
@@ -11,4 +11,8 @@ nfa_state* nfaCreate(unsigned short split, nfa_state* path, nfa_state* alternati
 	construct->lastid = 0;
 
 	return construct;
+}
+
+void nfaStateFree(nfa_state* state) {
+	free(state);
 }

@@ -16,6 +16,7 @@ typedef struct nfa_state {
 	unsigned int lastid;
 } nfa_state;
 
-nfa_state* nfaCreate(unsigned short split, nfa_state* path, nfa_state* alternative);
+nfa_state* nfaStateCreate(unsigned short split, nfa_state* path, nfa_state* alternative);
+void nfaFree(nfa_state* state);
 
 #endif /* NFA_H_ */

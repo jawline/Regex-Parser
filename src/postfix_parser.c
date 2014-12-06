@@ -4,15 +4,13 @@
  *  Created on: 30 Nov 2014
  *      Author: blake
  */
-#include "parser.h"
+#include "postfix_parser.h"
 #include "nfa_fragment.h"
 #include "fragment_stack.h"
+#include "nfa.h"
+
 #include <stdlib.h>
 #include <stdio.h>
-
-bool empty(nfa_list* list) {
-	return list->currentSize == 0;
-}
 
 nfa_fragment* basicFragment(nfa_state* state) {
 	nfa_fragment* frag = nfaFragmentCreate();
@@ -30,15 +28,19 @@ void fillTails(nfa_fragment* fragment, nfa_fragment* tails) {
 	}
 }
 
+nfa_state* createState(unsigned short condition, regex* regex) {
+	 nfa_state* state = nfaStateCreate(condition, NULL, NULL);
+	 nfaListAddState(&regex->stateList, state);
+	 return state;
+}
+
 bool regexParse(regex* regexStructure, char const* input) {
 
-	fragment_stack stateStack;
+	nfa_fragment_stack stateStack;
 	nfa_state *state;
 	nfa_fragment *t1, *t2, *t3;
 
-	//Allocate a list to keep track of regex states
 	nfaListAllocate(&regexStructure->stateList, 1000);
-
 	nfaFragmentStackAllocate(&stateStack, 100);
 
 	for (; *input; input++) {
@@ -66,29 +68,31 @@ bool regexParse(regex* regexStructure, char const* input) {
 			nfaFragmentStackPush(&stateStack, t3);
 			break;
 		case '|':
+
 			t1 = nfaFragmentStackPop(&stateStack);
 			t2 = nfaFragmentStackPop(&stateStack);
 
-			state = nfaCreate(256, t1->start, t2->start);
-			nfaListAddState(&regexStructure->stateList, state);
+			state = createState(256, regexStructure);
+			state->path = t1->start;
+			state->alternative = t2->start;
 
 			t3 = nfaFragmentCreate();
 			t3->start = state;
+
 			fillTails(t3, t1);
 			fillTails(t3, t2);
 
 			nfaFragmentFree(t1);
 			nfaFragmentFree(t2);
+
 			nfaFragmentStackPush(&stateStack, t3);
 			break;
 		case '$':
-			state = nfaCreate(257, NULL, NULL);
-			nfaListAddState(&regexStructure->stateList, state);
+			state = createState(257, regexStructure);
 			nfaFragmentStackPush(&stateStack, basicFragment(state));
 			break;
 		default:
-			state = nfaCreate(*input, NULL, NULL);
-			nfaListAddState(&regexStructure->stateList, state);
+			state = createState(*input, regexStructure);
 			nfaFragmentStackPush(&stateStack, basicFragment(state));
 			break;
 		}
