@@ -19,15 +19,6 @@ nfa_fragment* basicFragment(nfa_state* state) {
 	return frag;
 }
 
-void fillTails(nfa_fragment* fragment, nfa_fragment* tails) {
-
-	unsigned int i;
-
-	for (i = 0; i < tails->tails.currentSize; i++) {
-		nfaFragmentAddTail(fragment, tails->tails.states[i]);
-	}
-}
-
 nfa_state* createState(unsigned short condition, regex* regex) {
 	nfa_state* state = nfaStateCreate(condition, NULL, NULL);
 	nfaListAdd(&regex->stateList, state);
@@ -37,7 +28,7 @@ nfa_state* createState(unsigned short condition, regex* regex) {
 bool regexParse(regex* regexStructure, char const* input) {
 
 	nfa_fragment_stack stateStack;
-	nfa_state *state;
+	nfa_state *state, *state2;
 	nfa_fragment *t1, *t2, *t3;
 
 	nfaListAllocate(&regexStructure->stateList, 1000);
@@ -53,12 +44,12 @@ bool regexParse(regex* regexStructure, char const* input) {
 			t2 = nfaFragmentStackPop(&stateStack);
 
 			//Patch the tail states on t1 to the start state on t2
-			nfaFragmentPatch(t1, t2);
+			nfaFragmentPatch(t1, t2->start);
 
 			//Create a new fragment using t2's tail states and t1's start states (The concat of both)
 			t3 = nfaFragmentCreate();
 			t3->start = t1->start;
-			fillTails(t3, t2);
+			nfaFragmentFillTails(t3, t2);
 
 			//Free the two popped fragment
 			nfaFragmentFree(t1);
@@ -79,12 +70,50 @@ bool regexParse(regex* regexStructure, char const* input) {
 			t3 = nfaFragmentCreate();
 			t3->start = state;
 
-			fillTails(t3, t1);
-			fillTails(t3, t2);
+			nfaFragmentFillTails(t3, t1);
+			nfaFragmentFillTails(t3, t2);
 
 			nfaFragmentFree(t1);
 			nfaFragmentFree(t2);
 
+			nfaFragmentStackPush(&stateStack, t3);
+			break;
+		case '+':
+			t1 = nfaFragmentStackPop(&stateStack);
+
+			state = createState(256, regexStructure);
+			state->path = NULL;
+			state->alternative = t1->start;
+
+			nfaFragmentPatch(t1, state);
+
+			t3 = nfaFragmentCreate();
+			t3->start = t1->start;
+			nfaFragmentAddTail(t3, state);
+
+			nfaFragmentFree(t1);
+			nfaFragmentStackPush(&stateStack, t3);
+			break;
+		case '*':
+			t1 = nfaFragmentStackPop(&stateStack);
+
+			state2 = createState(256, regexStructure);
+			state2->path = NULL;
+			state2->alternative = t1->start;
+
+			state = createState(256, regexStructure);
+			state->path = NULL;
+			state->alternative = state2;
+
+			nfaFragmentPatch(t1, state2);
+
+			t3 = nfaFragmentCreate();
+			t3->start = state;
+
+			nfaFragmentAddTail(t3, state);
+			nfaFragmentAddTail(t3, state2);
+
+			nfaFragmentFree(t1);
 			nfaFragmentStackPush(&stateStack, t3);
 			break;
 		case '$':
