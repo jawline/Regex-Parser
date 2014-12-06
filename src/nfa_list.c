@@ -20,24 +20,7 @@ void nfaListReset(nfa_list* list) {
 
 void nfaListStart(nfa_list* list, nfa_state* state) {
 	nfaListReset(list);
-	nfaListAddState(list, state);
-}
-
-void nfaListAddState(nfa_list* list, nfa_state* state) {
-
-	if (!state || state->lastid == listid) {
-		return;
-	}
-
-	state->lastid = listid;
-
-	if (state->target == 256) {
-		nfaListAddState(list, state->path);
-		nfaListAddState(list, state->alternative);
-		return;
-	}
-
-	list->states[list->currentSize++] = state;
+	nfaListAddFollowPaths(list, state);
 }
 
 bool nfaListContains(nfa_list* list, nfa_state* state) {
@@ -52,4 +35,24 @@ bool nfaListContains(nfa_list* list, nfa_state* state) {
 	}
 
 	return false;
+}
+
+void nfaListAdd(nfa_list* list, nfa_state* state) {
+	list->states[list->currentSize++] = state;
+}
+
+void nfaListAddFollowPaths(nfa_list* list, nfa_state* state) {
+
+	if (state->lastid == listid) {
+		return;
+	}
+
+	state->lastid = listid;
+
+	if (state->target == 256) {
+		nfaListAddFollowPaths(list, state->path);
+		nfaListAddFollowPaths(list, state->alternative);
+	} else {
+		nfaListAdd(list, state);
+	}
 }

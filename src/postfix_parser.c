@@ -29,9 +29,9 @@ void fillTails(nfa_fragment* fragment, nfa_fragment* tails) {
 }
 
 nfa_state* createState(unsigned short condition, regex* regex) {
-	 nfa_state* state = nfaStateCreate(condition, NULL, NULL);
-	 nfaListAddState(&regex->stateList, state);
-	 return state;
+	nfa_state* state = nfaStateCreate(condition, NULL, NULL);
+	nfaListAdd(&regex->stateList, state);
+	return state;
 }
 
 bool regexParse(regex* regexStructure, char const* input) {

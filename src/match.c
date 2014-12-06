@@ -11,7 +11,7 @@ void nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next)
 		state = current->states[i];
 
 		if (state->target == c) {
-			nfaListAddState(next, state->path);
+			nfaListAddFollowPaths(next, state->path);
 		}
 	}
 }

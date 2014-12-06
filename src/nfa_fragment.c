@@ -14,7 +14,7 @@ void nfaFragmentFree(nfa_fragment* fragment) {
 }
 
 void nfaFragmentAddTail(nfa_fragment* fragment, nfa_state* state) {
-	nfaListAddState(&fragment->tails, state);
+	nfaListAddFollowPaths(&fragment->tails, state);
 }
 
 void nfaFragmentPatch(nfa_fragment* fragment, nfa_fragment* end) {
@@ -23,5 +23,14 @@ void nfaFragmentPatch(nfa_fragment* fragment, nfa_fragment* end) {
 
 	for (i = 0; i < fragment->tails.currentSize; i++) {
 		fragment->tails.states[i]->path = end->start;
+	}
+}
+
+void nfaFragmentFillTails(nfa_fragment* fragment, nfa_fragment* other) {
+
+	unsigned int i;
+
+	for (i = 0; i < other->tails.currentSize; i++) {
+		nfaFragmentAddTail(fragment, other->tails.states[i]);
 	}
 }

@@ -11,7 +11,8 @@ typedef struct nfa_list {
 void nfaListAllocate(nfa_list* list, int maxSize);
 void nfaListReset(nfa_list* list);
 void nfaListStart(nfa_list* list, nfa_state* state);
-void nfaListAddState(nfa_list* list, nfa_state* state);
+void nfaListAdd(nfa_list* list, nfa_state* state);
+void nfaListAddFollowPaths(nfa_list* list, nfa_state* state);
 void nfaListFree(nfa_list* list);
 bool nfaListContains(nfa_list* list, nfa_state* state);
 
