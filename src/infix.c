@@ -19,12 +19,10 @@ int precidence(char c) {
 	case '(':
 		return 1;
 	case '|':
-		return 2;
+		return 3;
 	case '.':
 		return 3;
 	case '?':
-		return 4;
-	case '*':
 		return 4;
 	case '+':
 		return 4;
