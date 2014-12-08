@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include "match.h"
 #include "postfix_parser.h"
+#include "infix.h"
 
 int main(int argc, char** argv) {
 
-
+	regex reg;
 	unsigned int i;
 
 	for (i = 0; i < argc; i++) {
@@ -17,9 +18,11 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	regex reg;
+	char* postFix = infixToPostfix(argv[1]);
+	printf("Infix Conversion: %s\n", postFix);
+	regexParse(&reg, postFix);
+	free(postFix);
 
-	regexParse(&reg, argv[1]);
 	printf("%s\n", nfaMatches(reg.start, argv[2]) ? "matches" : "does not match");
 	regexFree(&reg);
 
