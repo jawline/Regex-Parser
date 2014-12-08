@@ -40,8 +40,8 @@ bool regexParse(regex* regexStructure, char const* input) {
 		case '.':
 
 			//Pop the two sides of the concat
-			t1 = nfaFragmentStackPop(&stateStack);
 			t2 = nfaFragmentStackPop(&stateStack);
+			t1 = nfaFragmentStackPop(&stateStack);
 
 			//Patch the tail states on t1 to the start state on t2
 			nfaFragmentPatch(t1, t2->start);
@@ -60,8 +60,8 @@ bool regexParse(regex* regexStructure, char const* input) {
 			break;
 		case '|':
 
+			t2= nfaFragmentStackPop(&stateStack);
 			t1 = nfaFragmentStackPop(&stateStack);
-			t2 = nfaFragmentStackPop(&stateStack);
 
 			state = createState(256, regexStructure);
 			state->path = t1->start;

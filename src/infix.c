@@ -35,29 +35,10 @@ int precidence(char c) {
 	return 6;
 }
 
-char *strrev(char *str) {
-	char *p1, *p2;
-
-	if (!str || !*str)
-		return str;
-	for (p1 = str, p2 = str + strlen(str) - 1; p2 > p1; ++p1, --p2) {
-		*p1 ^= *p2;
-		*p2 ^= *p1;
-		*p1 ^= *p2;
-	}
-	return str;
-}
-
-char* infixToPostfix(char* input) {
-
-	char* start, *str;
-	start = str = malloc(strlen(input));
-	strncpy(str, input, strlen(input));
-	strrev(str);
+char* infixToPostfix(char* str) {
 
 	generic_stack* infixStack = stackAllocate(1, 1000);
 	generic_stack* output = stackAllocate(1, 1000);
-	unsigned int precidenceCurrent, precidencePeek;
 
 	char peek;
 
@@ -69,23 +50,17 @@ char* infixToPostfix(char* input) {
 			stackPush(infixStack, "(");
 		} else if (*str == ')') {
 
-			while (peek != ')') {
-				stackPop(infixStack, &peek);
+			stackPop(infixStack, &peek);
+			while (peek != '(') {
 				stackPush(output, &peek);
+				stackPop(infixStack, &peek);
 			}
 
 		} else {
-
-			while (!stackEmpty(infixStack)) {
-				precidenceCurrent = precidence(*str);
-				precidencePeek = precidence(peek);
-
-				if (precidencePeek >= precidenceCurrent) {
-					stackPop(infixStack, &peek);
-					stackPush(output, &peek);
-				} else {
-					break;
-				}
+			while (!stackEmpty(infixStack)
+					&& precidence(peek) >= precidence(*str)) {
+				stackPop(infixStack, &peek);
+				stackPush(output, &peek);
 			}
 
 			stackPush(infixStack, str);
@@ -102,7 +77,6 @@ char* infixToPostfix(char* input) {
 
 	stackFree(infixStack);
 	stackFree(output);
-	free(start);
 
 	return result;
 }
