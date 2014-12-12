@@ -19,14 +19,11 @@ int precidence(char c) {
 	case '(':
 		return 1;
 	case '|':
+		return 2;
+       	case '.':
 		return 3;
-	case '.':
-		return 3;
-	case '?':
-		return 4;
+	case '*':
 	case '+':
-		return 4;
-	case '^':
 		return 5;
 	}
 
@@ -49,16 +46,22 @@ char* infixToPostfix(char* str) {
 		} else if (*str == ')') {
 
 			stackPop(infixStack, &peek);
+
 			while (peek != '(') {
 				stackPush(output, &peek);
 				stackPop(infixStack, &peek);
 			}
 
 		} else {
+
 			while (!stackEmpty(infixStack)
 					&& precidence(peek) >= precidence(*str)) {
+
 				stackPop(infixStack, &peek);
 				stackPush(output, &peek);
+
+				//Update the peek
+				stackPeek(infixStack, &peek);
 			}
 
 			stackPush(infixStack, str);
@@ -70,7 +73,8 @@ char* infixToPostfix(char* str) {
 		stackPush(output, &peek);
 	}
 
-	stackPush(output, "\0");
+	peek = '\0';
+	stackPush(output, &peek);
 
 	char* result = malloc(stackSize(output));
 	memcpy(result, output->data, output->current);
