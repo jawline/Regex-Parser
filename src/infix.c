@@ -22,7 +22,7 @@ int precidence(char c) {
 	case ')': 
 	        return 1;
 	case '|':
-		return 2;
+		return 3;
        	case '.':
 		return 3;
 	case '*':
@@ -48,6 +48,8 @@ char* infixInsertExplicitConcatenation(char* str) {
 
     if (!isOperator(*str)) {
       insertPlanned = true;
+    } else if (*str == '|') {
+      insertPlanned = false;
     }
 
     if (insertPlanned && nextChar(str) != '\0' && !isOperator(nextChar(str))) {
