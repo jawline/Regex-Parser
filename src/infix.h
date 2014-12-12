@@ -9,6 +9,7 @@
 #define INFIX_H_
 #include "stack.h"
 
+char* infixInsertExplicitConcatenation(char* str);
 char* infixToPostfix(char* str);
 
 #endif /* INFIX_H_ */

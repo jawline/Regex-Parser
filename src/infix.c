@@ -33,7 +33,11 @@ int precidence(char c) {
 	return 6;
 }
 
-char* insertInfixDots(char* str) {
+bool isOperator(char c) {
+  return precidence(c) != 6;
+}
+
+char* infixInsertExplicitConcatenation(char* str) {
 
   generic_stack* output = stackAllocate(1, 1000);
   char temp;
@@ -42,11 +46,11 @@ char* insertInfixDots(char* str) {
   for (; *str; str++) {
     stackPush(output, str);
 
-    if (precidence(*str) == 6) {
+    if (!isOperator(*str)) {
       insertPlanned = true;
     }
 
-    if (insertPlanned && nextChar(str) != '\0' && precidence(nextChar(str)) == 6) {
+    if (insertPlanned && nextChar(str) != '\0' && !isOperator(nextChar(str))) {
       stackPush(output, ".");
       insertPlanned = false;
     }
@@ -65,9 +69,6 @@ char* insertInfixDots(char* str) {
 
 char* infixToPostfix(char* str) {
         
-        char *start = str = insertInfixDots(str);
-        printf(str);
-
 	generic_stack* infixStack = stackAllocate(1, 1000);
 	generic_stack* output = stackAllocate(1, 1000);
 
@@ -121,6 +122,5 @@ char* infixToPostfix(char* str) {
 	stackFree(infixStack);
 	stackFree(output);
 
-	free(start);
 	return result;
 }

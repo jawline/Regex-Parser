@@ -7,19 +7,22 @@
 int main(int argc, char** argv) {
 
 	regex reg;
-	unsigned int i;
-
-	for (i = 0; i < argc; i++) {
-		printf("%s\n", argv[i]);
-	}
 
 	if (argc != 3) {
 		printf("Incorrect Usage\n");
 		return -1;
 	}
 
-	char* postFix = infixToPostfix(argv[1]);
+	printf("Regex Definition: %s\nMatching Against: %s\n", argv[1], argv[2]);
+
+	char* infixWithConcatenations = infixInsertExplicitConcatenation(argv[1]);
+	printf("Infix with concatenations inserted %s\n", infixWithConcatenations);
+
+	char* postFix = infixToPostfix(infixWithConcatenations);
 	printf("Infix Conversion: %s\n", postFix);
+   
+	free(infixWithConcatenations);
+
 	regexParse(&reg, postFix);
 	free(postFix);
 
