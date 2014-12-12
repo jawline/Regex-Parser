@@ -53,7 +53,7 @@ char* infixInsertExplicitConcatenation(char* str) {
       insertPlanned = false;
     }
 
-    if (insertPlanned && nextChar(str) != '\0' && !isOperator(nextChar(str))) {
+    if (insertPlanned && nextChar(str) != '\0' && (nextChar(str) == '(' || !isOperator(nextChar(str)))) {
       stackPush(output, ".");
       insertPlanned = false;
     }
