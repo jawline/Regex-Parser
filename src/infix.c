@@ -42,15 +42,18 @@ char* infixToPostfix(char* str) {
 		stackPeek(infixStack, &peek);
 
 		if (*str == '(') {
-			stackPush(infixStack, "(");
+		        peek = '(';
+			stackPush(infixStack, &peek);
 		} else if (*str == ')') {
 
-			stackPop(infixStack, &peek);
-
 			while (peek != '(') {
+      				stackPop(infixStack, &peek);
 				stackPush(output, &peek);
-				stackPop(infixStack, &peek);
+				stackPeek(infixStack, &peek);
 			}
+
+			//Discard the '('
+			stackPop(infixStack, &peek);
 
 		} else {
 
