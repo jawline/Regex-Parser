@@ -54,12 +54,19 @@ char* insertInfixDots(char* str) {
  
   temp = '\0';
   stackPush(output, &temp);
-  return output->data;
+
+  char* result = malloc(strlen(output->data) + 1);
+  strcpy(result, output->data);
+
+  stackFree(output);
+
+  return result;
 }
 
 char* infixToPostfix(char* str) {
-  str = insertInfixDots(str);
-  printf(str);
+        
+        char *start = str = insertInfixDots(str);
+        printf(str);
 
 	generic_stack* infixStack = stackAllocate(1, 1000);
 	generic_stack* output = stackAllocate(1, 1000);
@@ -114,5 +121,6 @@ char* infixToPostfix(char* str) {
 	stackFree(infixStack);
 	stackFree(output);
 
+	free(start);
 	return result;
 }
