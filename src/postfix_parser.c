@@ -116,6 +116,21 @@ bool regexParse(regex* regexStructure, char const* input) {
 			nfaFragmentFree(t1);
 			nfaFragmentStackPush(&stateStack, t3);
 			break;
+		case '?':
+		        t1 = nfaFragmentStackPop(&stateStack);
+		        
+			state = createState(256, regexStructure);
+			state->path = NULL;
+			state->alternative = t1->start;
+			
+			t2 = nfaFragmentCreate();
+			t2->start = state;
+			nfaFragmentAddTail(t2, state);
+			nfaFragmentFillTails(t2, t1);
+
+			nfaFragmentFree(t1);
+			nfaFragmentStackPush(&stateStack, t2);
+			break;
 		case '$':
 			state = createState(257, regexStructure);
 			nfaFragmentStackPush(&stateStack, basicFragment(state));

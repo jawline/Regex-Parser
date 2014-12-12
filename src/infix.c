@@ -1,4 +1,4 @@
-/*
+#/*
  * infix.c
  *
  *  Created on: 7 Dec 2014
@@ -25,6 +25,7 @@ int precidence(char c) {
 		return 3;
        	case '.':
 		return 3;
+        case '?':
 	case '*':
 	case '+':
 		return 5;
