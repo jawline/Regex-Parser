@@ -70,6 +70,8 @@ char* infixToPostfix(char* str) {
 		stackPush(output, &peek);
 	}
 
+	stackPush(output, "\0");
+
 	char* result = malloc(stackSize(output));
 	memcpy(result, output->data, output->current);
 
