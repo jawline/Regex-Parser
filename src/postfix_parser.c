@@ -4,13 +4,13 @@
  *  Created on: 30 Nov 2014
  *      Author: blake
  */
+#include <stdlib.h>
+#include <stdio.h>
 #include "postfix_parser.h"
 #include "nfa_fragment.h"
 #include "stack.h"
 #include "nfa.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 
 nfa_fragment* basicFragment(nfa_state* state) {
 	nfa_fragment* frag = nfaFragmentCreate();
@@ -131,7 +131,6 @@ bool regexParse(regex* regexStructure, char const* input) {
 
 			nfaFragmentFree(t1);
 
-
 			stackPush(stateStack, &t3);
 			break;
 		case '$':
@@ -153,7 +152,7 @@ bool regexParse(regex* regexStructure, char const* input) {
 
 	while (!stackEmpty(stateStack)) {
 		stackPop(stateStack, &t1);
-		printf("WARN: Stuff left in stack\n");
+		printf("WARN: Stuff left in stack. Your regular expression sucks.\n");
 		nfaFragmentFree(t1);
 	}
 
