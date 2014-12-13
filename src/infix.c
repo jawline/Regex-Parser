@@ -19,13 +19,13 @@ int precidence(char c) {
 	switch (c) {
 	case '(':
 		return 1;
-	case ')': 
-	        return 1;
+	case ')':
+		return 1;
 	case '|':
 		return 2;
-       	case '.':
+	case '.':
 		return 3;
-        case '?':
+	case '?':
 	case '*':
 	case '+':
 		return 5;
@@ -35,43 +35,44 @@ int precidence(char c) {
 }
 
 bool isOperator(char c) {
-  return precidence(c) != 6;
+	return precidence(c) != 6;
 }
 
 char* infixInsertExplicitConcatenation(char* str) {
 
-  generic_stack* output = stackAllocate(1, 1000);
-  char temp;
-  bool insertPlanned = false;
+	generic_stack* output = stackAllocate(1, 1000);
+	char temp;
+	bool insertPlanned = false;
 
-  for (; *str; str++) {
-    stackPush(output, str);
+	for (; *str; str++) {
+		stackPush(output, str);
 
-    if (!isOperator(*str)) {
-      insertPlanned = true;
-    } else if (*str == '|') {
-      insertPlanned = false;
-    }
+		if (!isOperator(*str)) {
+			insertPlanned = true;
+		} else if (*str == '|') {
+			insertPlanned = false;
+		}
 
-    if (insertPlanned && nextChar(str) != '\0' && (nextChar(str) == '(' || !isOperator(nextChar(str)))) {
-      stackPush(output, ".");
-      insertPlanned = false;
-    }
-  }
- 
-  temp = '\0';
-  stackPush(output, &temp);
+		if (insertPlanned && nextChar(str) != '\0'
+				&& (nextChar(str) == '(' || !isOperator(nextChar(str)))) {
+			stackPush(output, ".");
+			insertPlanned = false;
+		}
+	}
 
-  char* result = malloc(strlen(output->data) + 1);
-  strcpy(result, output->data);
+	temp = '\0';
+	stackPush(output, &temp);
 
-  stackFree(output);
+	char* result = malloc(strlen(output->data) + 1);
+	strcpy(result, output->data);
 
-  return result;
+	stackFree(output);
+
+	return result;
 }
 
 char* infixToPostfix(char* str) {
-        
+
 	generic_stack* infixStack = stackAllocate(1, 1000);
 	generic_stack* output = stackAllocate(1, 1000);
 
@@ -82,12 +83,12 @@ char* infixToPostfix(char* str) {
 		stackPeek(infixStack, &peek);
 
 		if (*str == '(') {
-		        peek = '(';
+			peek = '(';
 			stackPush(infixStack, &peek);
 		} else if (*str == ')') {
 
 			while (peek != '(') {
-      				stackPop(infixStack, &peek);
+				stackPop(infixStack, &peek);
 				stackPush(output, &peek);
 				stackPeek(infixStack, &peek);
 			}
@@ -103,7 +104,7 @@ char* infixToPostfix(char* str) {
 				stackPop(infixStack, &peek);
 				stackPush(output, &peek);
 
-				//Update the peek
+				//Update the peeked
 				stackPeek(infixStack, &peek);
 			}
 

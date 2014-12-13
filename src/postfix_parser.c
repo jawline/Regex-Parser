@@ -6,7 +6,7 @@
  */
 #include "postfix_parser.h"
 #include "nfa_fragment.h"
-#include "fragment_stack.h"
+#include "stack.h"
 #include "nfa.h"
 
 #include <stdlib.h>
@@ -27,12 +27,11 @@ nfa_state* createState(unsigned short condition, regex* regex) {
 
 bool regexParse(regex* regexStructure, char const* input) {
 
-	nfa_fragment_stack stateStack;
+	generic_stack* stateStack = stackAllocate(sizeof(nfa_fragment*), 100);
 	nfa_state *state, *state2;
 	nfa_fragment *t1, *t2, *t3;
 
 	nfaListAllocate(&regexStructure->stateList, 1000);
-	nfaFragmentStackAllocate(&stateStack, 100);
 
 	for (; *input; input++) {
 
@@ -40,8 +39,8 @@ bool regexParse(regex* regexStructure, char const* input) {
 		case '.':
 
 			//Pop the two sides of the concat
-			t2 = nfaFragmentStackPop(&stateStack);
-			t1 = nfaFragmentStackPop(&stateStack);
+			stackPop(stateStack, &t2);
+			stackPop(stateStack, &t1);
 
 			//Patch the tail states on t1 to the start state on t2
 			nfaFragmentPatch(t1, t2->start);
@@ -56,12 +55,12 @@ bool regexParse(regex* regexStructure, char const* input) {
 			nfaFragmentFree(t2);
 
 			//Push the new one
-			nfaFragmentStackPush(&stateStack, t3);
+			stackPush(stateStack, &t3);
 			break;
 		case '|':
 
-			t2= nfaFragmentStackPop(&stateStack);
-			t1 = nfaFragmentStackPop(&stateStack);
+			stackPop(stateStack, &t2);
+			stackPop(stateStack, &t1);
 
 			state = createState(256, regexStructure);
 			state->path = t1->start;
@@ -76,10 +75,10 @@ bool regexParse(regex* regexStructure, char const* input) {
 			nfaFragmentFree(t1);
 			nfaFragmentFree(t2);
 
-			nfaFragmentStackPush(&stateStack, t3);
+			stackPush(stateStack, &t3);
 			break;
 		case '+':
-			t1 = nfaFragmentStackPop(&stateStack);
+			stackPop(stateStack, &t1);
 
 			state = createState(256, regexStructure);
 			state->path = NULL;
@@ -92,10 +91,11 @@ bool regexParse(regex* regexStructure, char const* input) {
 			nfaFragmentAddTail(t3, state);
 
 			nfaFragmentFree(t1);
-			nfaFragmentStackPush(&stateStack, t3);
+
+			stackPush(stateStack, &t3);
 			break;
 		case '*':
-			t1 = nfaFragmentStackPop(&stateStack);
+			stackPop(stateStack, &t1);
 
 			state2 = createState(256, regexStructure);
 			state2->path = NULL;
@@ -114,46 +114,50 @@ bool regexParse(regex* regexStructure, char const* input) {
 			nfaFragmentAddTail(t3, state2);
 
 			nfaFragmentFree(t1);
-			nfaFragmentStackPush(&stateStack, t3);
+
+			stackPush(stateStack, &t3);
 			break;
 		case '?':
-		        t1 = nfaFragmentStackPop(&stateStack);
-		        
+			stackPop(stateStack, &t1);
+
 			state = createState(256, regexStructure);
 			state->path = NULL;
 			state->alternative = t1->start;
-			
-			t2 = nfaFragmentCreate();
-			t2->start = state;
-			nfaFragmentAddTail(t2, state);
-			nfaFragmentFillTails(t2, t1);
+
+			t3 = nfaFragmentCreate();
+			t3->start = state;
+			nfaFragmentAddTail(t3, state);
+			nfaFragmentFillTails(t3, t1);
 
 			nfaFragmentFree(t1);
-			nfaFragmentStackPush(&stateStack, t2);
+
+
+			stackPush(stateStack, &t3);
 			break;
 		case '$':
 			state = createState(257, regexStructure);
-			nfaFragmentStackPush(&stateStack, basicFragment(state));
+			t3 = basicFragment(state);
+			stackPush(stateStack, &t3);
 			break;
 		default:
 			state = createState(*input, regexStructure);
-			nfaFragmentStackPush(&stateStack, basicFragment(state));
+			t3 = basicFragment(state);
+			stackPush(stateStack, &t3);
 			break;
 		}
 	}
 
-	t1 = nfaFragmentStackPop(&stateStack);
+	stackPop(stateStack, &t1);
 	regexStructure->start = t1->start;
-
 	nfaFragmentFree(t1);
 
-	while ((t1 = nfaFragmentStackPop(&stateStack)) != NULL) {
+	while (!stackEmpty(stateStack)) {
+		stackPop(stateStack, &t1);
 		printf("WARN: Stuff left in stack\n");
 		nfaFragmentFree(t1);
 	}
 
-	nfaFragmentStackFree(&stateStack);
-
+	stackFree(stateStack);
 	return true;
 }
 
