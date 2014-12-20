@@ -1,4 +1,4 @@
-#/*
+/*
  * infix.c
  *
  *  Created on: 7 Dec 2014
@@ -38,6 +38,31 @@ bool isOperator(char c) {
 	return precidence(c) != 6;
 }
 
+char* infixComputeBrackets(char* str, generic_stack* output) {
+ 
+  char temp;
+
+  temp = '(';
+  stackPush(output, &temp);
+
+  str++;
+
+  for (; *str && *str != ']'; str++) {
+
+    stackPush(output, str);
+    
+    if (nextChar(str) != ']') {
+      temp = '|';
+      stackPush(output, &temp);
+    }
+  }
+
+  temp = ')';
+  stackPush(output, &temp);
+
+  return str;
+}
+
 char* infixInsertExplicitConcatenation(char* str) {
 
 	generic_stack* output = stackAllocate(1, 1000);
@@ -45,13 +70,21 @@ char* infixInsertExplicitConcatenation(char* str) {
 	bool insertPlanned = false;
 
 	for (; *str; str++) {
-		stackPush(output, str);
 
-		if (!isOperator(*str)) {
+		if (*str == '[') {
+			str = infixComputeBrackets(str, output);
 			insertPlanned = true;
-		} else if (*str == '|') {
-			insertPlanned = false;
+		} else {
+
+			stackPush(output, str);
+
+			if (!isOperator(*str)) {
+				insertPlanned = true;
+			} else if (*str == '|') {
+				insertPlanned = false;
+			}
 		}
+
 
 		if (insertPlanned && nextChar(str) != '\0'
 				&& (nextChar(str) == '(' || !isOperator(nextChar(str)))) {

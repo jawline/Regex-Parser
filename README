@@ -1,4 +1,22 @@
-To compile type make
+A regexular expression string matcher
 
-To test try something like
-./bin/regex "(abc)*d$" "abcabcabcd"
+Regex is passed as infix with a $ to signal matching.
+
+Some examples
+./bin/regex "abc$" "abc"
+./bin/regex "(a|b)cc$" "acc"
+./bin/regex "b*$" "bbbbbbbb"
+
+Supported syntax
+? - String may exist
+* - Zero or more instances may exist
++ - One or more instances may exist
+| - Left or right side match
+() - Brackets can be used to group
+[abc] - Any character inside square brackets will be matched (Equivilent to (a|b|c))
+
+TODO:
+NFA -> DFA
+[a-z0-9] syntax
+^ any match
+I'm sure some other stuff
