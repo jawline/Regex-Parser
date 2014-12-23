@@ -8,7 +8,20 @@
 #include "stack.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
+
+ bool isUppercase(char c) {
+ 	return c >= 65 && c <= 90;
+ }
+
+ bool isLowercase(char c) {
+ 	return c >= 97 && c <=122;
+ }
+
+ bool isNumeric(char c) {
+ 	return c >= 48 && c <= 57;
+ }
 
 char nextChar(char* str) {
 	return *(str + 1);
@@ -38,6 +51,26 @@ bool isOperator(char c) {
 	return precidence(c) != 6;
 }
 
+void handleInsertBetween(char c, char r, generic_stack* output) {
+
+	char temp;
+	char iter;
+
+	if (r <= c) {
+		printf("Cannot insert between %c and %c\n", c, r);
+	}
+
+	if ((isUppercase(c) && isUppercase(r)) || (isLowercase(c) && isLowercase(r)) || (isNumeric(c) && isNumeric(r))) {
+		for (iter = c; iter <= r; iter++) {
+			stackPush(output, &iter);
+			if (iter != r) {
+				temp = '|';
+				stackPush(output, &temp);
+			}
+		}
+	}
+}
+
 char* infixComputeBrackets(char* str, generic_stack* output) {
  
   char temp;
@@ -49,12 +82,20 @@ char* infixComputeBrackets(char* str, generic_stack* output) {
 
   for (; *str && *str != ']'; str++) {
 
-    stackPush(output, str);
-    
-    if (nextChar(str) != ']') {
-      temp = '|';
-      stackPush(output, &temp);
-    }
+  	if (nextChar(str) == '-') {
+  		handleInsertBetween(*str, *(str+2), output);
+  		str += 2;
+  		if (nextChar(str) && nextChar(str) != ']') {
+  			temp = '|';
+  			stackPush(output, &temp);
+  		}
+  	} else {
+	    stackPush(output, str);
+	    if (nextChar(str) != ']') {
+	      temp = '|';
+	      stackPush(output, &temp);
+	    }
+	}
   }
 
   temp = ')';
