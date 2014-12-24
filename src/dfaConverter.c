@@ -1,5 +1,6 @@
 #include "dfaConverter.h"
 
 regex* convertToDfa(regex* nfa) {
-	//UNIMPLEMENTED
+	#pragma message ("NFA->DFA unimplemented")
+	return 0;
 }

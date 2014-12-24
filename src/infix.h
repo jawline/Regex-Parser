@@ -9,7 +9,14 @@
 #define INFIX_H_
 #include "stack.h"
 
+/**
+ * Insert . symbols into NFA's in an infix notation (so abc$ becomes a.b.c.$)
+ */
 char* infixInsertExplicitConcatenation(char* str);
+
+/**
+ * Convert a regular expression string in infix notation to postfix notation
+ */
 char* infixToPostfix(char* str);
 
-#endif /* INFIX_H_ */
+#endif //INFIX_H_
