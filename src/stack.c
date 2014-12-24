@@ -5,7 +5,7 @@
 const unsigned int cDefaultStackSize = 100;
 
 generic_stack* stackAllocate(unsigned int elementSize) {
-	stackAllocateWithSize(elementSize, cDefaultStackSize);
+	return stackAllocateWithSize(elementSize, cDefaultStackSize);
 }
 
 generic_stack* stackAllocateWithSize(unsigned int elementSize, unsigned int max) {
