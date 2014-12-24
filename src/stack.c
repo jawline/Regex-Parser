@@ -2,6 +2,12 @@
 #include <string.h>
 #include <stdlib.h>
 
+const unsigned int cDefaultStackSize = 100;
+
+generic_stack* stackAllocate(unsigned int elementSize) {
+	stackAllocate(elementSize, cDefaultStackSize);
+}
+
 generic_stack* stackAllocate(unsigned int elementSize, unsigned int max) {
 
 	generic_stack* newStack = malloc(sizeof(generic_stack));
