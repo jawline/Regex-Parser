@@ -7,13 +7,7 @@
 
 #ifndef PARSER_H_
 #define PARSER_H_
-#include "nfa.h"
-#include "nfa_list.h"
-
-typedef struct regex {
-	nfa_list stateList;
-	nfa_state* start;
-} regex;
+#include "regex.h"
 
 bool regexParse(regex* regexStructure, char const* input);
 void regexFree(regex* regexStructure);
