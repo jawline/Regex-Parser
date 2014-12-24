@@ -5,10 +5,10 @@
 const unsigned int cDefaultStackSize = 100;
 
 generic_stack* stackAllocate(unsigned int elementSize) {
-	stackAllocate(elementSize, cDefaultStackSize);
+	stackAllocateWithSize(elementSize, cDefaultStackSize);
 }
 
-generic_stack* stackAllocate(unsigned int elementSize, unsigned int max) {
+generic_stack* stackAllocateWithSize(unsigned int elementSize, unsigned int max) {
 
 	generic_stack* newStack = malloc(sizeof(generic_stack));
 

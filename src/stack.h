@@ -21,7 +21,7 @@ generic_stack* stackAllocate(unsigned int elementSize);
 /**
  * Allocate a stack object given an element size and the initial amount of space to allocate
  */
-generic_stack* stackAllocate(unsigned int elementSize, unsigned int max);
+generic_stack* stackAllocateWithSize(unsigned int elementSize, unsigned int max);
 
 /**
  * Free a stack
