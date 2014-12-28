@@ -11,7 +11,6 @@
 #include "stack.h"
 #include "nfa.h"
 
-
 nfa_fragment* basicFragment(nfa_state* state) {
 	nfa_fragment* frag = nfaFragmentCreate();
 	frag->start = state;
@@ -167,11 +166,10 @@ bool regexParse(regex* regexStructure, char const* input) {
 
 void regexFree(regex* regexStructure) {
 
-	//Free the regex states
 	unsigned int i;
 
 	for (i = 0; i < regexStructure->stateList.currentSize; i++) {
-		free(regexStructure->stateList.states[i]);
+		nfaStateFree(regexStructure->stateList.states[i]);
 	}
 
 	nfaListFree(&regexStructure->stateList);

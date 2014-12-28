@@ -29,6 +29,6 @@ nfa_state* nfaStateCreate(unsigned short split, nfa_state* path, nfa_state* alte
  * Free all memory used by a specific state
  * Note: Does not free connected states, each state NFA must be explicitely freed
  */
-void nfaFree(nfa_state* state);
+void nfaStateFree(nfa_state* state);
 
 #endif /* NFA_H_ */
