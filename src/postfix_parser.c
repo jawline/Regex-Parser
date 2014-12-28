@@ -138,6 +138,11 @@ bool regexParse(regex* regexStructure, char const* input) {
 			t3 = basicFragment(state);
 			stackPush(stateStack, &t3);
 			break;
+		case '^':
+			state = createState(258, regexStructure);
+			t3 = basicFragment(state);
+			stackPush(stateStack, &t3);
+			break;
 		default:
 			state = createState(*input, regexStructure);
 			t3 = basicFragment(state);
