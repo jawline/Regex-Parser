@@ -7,15 +7,17 @@
 
 #ifndef PARSER_H_
 #define PARSER_H_
-#include "nfa.h"
-#include "nfa_list.h"
+#include "regex.h"
 
-typedef struct regex {
-	nfa_list stateList;
-	nfa_state* start;
-} regex;
-
+/**
+ * Parses a regex string written in postfix notation and populates a given regexStructure with the results
+ */
 bool regexParse(regex* regexStructure, char const* input);
+
+/**
+ * Free all memory associated with the regex structure
+ * Should clear all NFA States and lists
+ */
 void regexFree(regex* regexStructure);
 
 #endif /* PARSER_H_ */

@@ -106,7 +106,7 @@ char* infixComputeBrackets(char* str, generic_stack* output) {
 
 char* infixInsertExplicitConcatenation(char* str) {
 
-	generic_stack* output = stackAllocate(1, 1000);
+	generic_stack* output = stackAllocate(1);
 	char temp;
 	bool insertPlanned = false;
 
@@ -147,8 +147,8 @@ char* infixInsertExplicitConcatenation(char* str) {
 
 char* infixToPostfix(char* str) {
 
-	generic_stack* infixStack = stackAllocate(1, 1000);
-	generic_stack* output = stackAllocate(1, 1000);
+	generic_stack* infixStack = stackAllocate(1);
+	generic_stack* output = stackAllocate(1);
 
 	char peek;
 
