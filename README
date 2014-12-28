@@ -6,6 +6,7 @@ Some examples
 ./bin/regex "abc$" "abc"
 ./bin/regex "(a|b)cc$" "acc"
 ./bin/regex "b*$" "bbbbbbbb"
+./bin/regex "[a-zA-Z]*$" "qQ"
 
 Supported syntax
 ? - String may exist
