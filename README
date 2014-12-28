@@ -3,10 +3,10 @@ A regexular expression string matcher
 Regex is passed as infix with a $ to signal matching.
 
 Some examples
-./bin/regex "abc$" "abc"
-./bin/regex "(a|b)cc$" "acc"
-./bin/regex "b*$" "bbbbbbbb"
-./bin/regex "[a-zA-Z]*$" "qQ"
+./bin/regex "abc" "abc"
+./bin/regex "(a|b)cc" "acc"
+./bin/regex "b*" "bbbbbbbb"
+./bin/regex "[a-zA-Z]*" "qQ"
 
 Supported syntax
 ? - String may exist

@@ -132,11 +132,6 @@ bool regexParse(regex* regexStructure, char const* input) {
 
 			stackPush(stateStack, &t3);
 			break;
-		case '$':
-			state = createState(257, regexStructure);
-			t3 = basicFragment(state);
-			stackPush(stateStack, &t3);
-			break;
 		case '^':
 			state = createState(258, regexStructure);
 			t3 = basicFragment(state);
@@ -149,6 +144,19 @@ bool regexParse(regex* regexStructure, char const* input) {
 			break;
 		}
 	}
+
+	//Concatenate a accepting at the end
+	state = createState(257, regexStructure);
+	t3 = basicFragment(state);
+
+	stackPop(stateStack, &t1);
+	nfaFragmentPatch(t1, state);
+
+	t3->start = t1->start;
+	nfaFragmentAddTail(t3, state);
+
+	nfaFragmentFree(t1);
+	stackPush(stateStack, &t3);
 
 	stackPop(stateStack, &t1);
 	regexStructure->start = t1->start;
