@@ -36,7 +36,7 @@ int precidence(char c) {
 		return 1;
 	case '|':
 		return 2;
-	case '.':
+	case '&':
 		return 3;
 	case '?':
 	case '*':
@@ -129,7 +129,7 @@ char* infixInsertExplicitConcatenation(char* str) {
 
 		if (insertPlanned && nextChar(str) != '\0'
 				&& (nextChar(str) == '(' || !isOperator(nextChar(str)))) {
-			stackPush(output, ".");
+			stackPush(output, "&");
 			insertPlanned = false;
 		}
 	}

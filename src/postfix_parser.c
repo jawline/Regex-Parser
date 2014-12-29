@@ -35,7 +35,7 @@ bool regexParse(regex* regexStructure, char const* input) {
 	for (; *input; input++) {
 
 		switch (*input) {
-		case '.':
+		case '&':
 
 			//Pop the two sides of the concat
 			stackPop(stateStack, &t2);
@@ -132,7 +132,7 @@ bool regexParse(regex* regexStructure, char const* input) {
 
 			stackPush(stateStack, &t3);
 			break;
-		case '^':
+		case '.':
 			state = createState(258, regexStructure);
 			t3 = basicFragment(state);
 			stackPush(stateStack, &t3);
