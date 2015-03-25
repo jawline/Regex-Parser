@@ -24,16 +24,12 @@ void nfaListStart(nfa_list* list, nfa_state* state) {
 }
 
 bool nfaListContains(nfa_list* list, nfa_state* state) {
-
 	unsigned int i;
-
 	for (i = 0; i < list->currentSize; i++) {
-
 		if (list->states[i] == state) {
 			return true;
 		}
 	}
-
 	return false;
 }
 
