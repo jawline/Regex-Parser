@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 /**
- * Returns the number of characters until the first match
+ * Returns the number of characters until the first match, or 0 if the string doesn't match
  */
 size_t nfaMatches(nfa_state* nfa, char const* targetString);
 
