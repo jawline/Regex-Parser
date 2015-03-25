@@ -31,7 +31,7 @@ void stackFree(generic_stack* stack);
 /**
  * Push an element to the stack
  */
-void stackPush(generic_stack* stack, void* elem);
+void stackPush(generic_stack* stack, void const* elem);
 
 /**
  * Pop an element to the stack
