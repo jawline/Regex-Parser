@@ -104,7 +104,7 @@ char* infixComputeBrackets(char* str, generic_stack* output) {
   return str;
 }
 
-char* infixInsertExplicitConcatenation(char* str) {
+char* infixInsertExplicitConcatenation(char const* str) {
 
 	generic_stack* output = stackAllocate(1);
 	char temp;
