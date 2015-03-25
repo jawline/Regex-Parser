@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 /**
- * Check if the target string matches with the NFA
+ * Returns the number of characters until the first match
  */
-bool nfaMatches(nfa_state* nfa, char const* targetString);
+size_t nfaMatches(nfa_state* nfa, char const* targetString);
 
 #endif //_NFA_SIMULATE_H_
