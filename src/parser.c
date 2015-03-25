@@ -47,10 +47,8 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 	nfaListAllocate(&regexStructure->stateList, 1000);
 
 	for (; *input; input++) {
-
 		switch (*input) {
 		case '&':
-
 			//Pop the two sides of the concat
 			stackPop(stateStack, &t2);
 			stackPop(stateStack, &t1);
@@ -71,7 +69,6 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 			stackPush(stateStack, &t3);
 			break;
 		case '|':
-
 			stackPop(stateStack, &t2);
 			stackPop(stateStack, &t1);
 
