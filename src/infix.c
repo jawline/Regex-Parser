@@ -16,7 +16,7 @@
  }
 
  bool isLowercase(char c) {
- 	return c >= 97 && c <=122;
+ 	return c >= 97 && c <= 122;
  }
 
  bool isNumeric(char c) {
@@ -151,37 +151,27 @@ char* infixToPostfix(char* str) {
 	generic_stack* output = stackAllocate(1);
 
 	char peek;
-
 	for (; *str; ++str) {
-
 		stackPeek(infixStack, &peek);
-
 		if (*str == '(') {
 			peek = '(';
 			stackPush(infixStack, &peek);
 		} else if (*str == ')') {
-
 			while (peek != '(') {
 				stackPop(infixStack, &peek);
 				stackPush(output, &peek);
 				stackPeek(infixStack, &peek);
 			}
-
 			//Discard the '('
 			stackPop(infixStack, &peek);
-
 		} else {
-
-			while (!stackEmpty(infixStack)
-					&& precidence(peek) >= precidence(*str)) {
-
+			while (!stackEmpty(infixStack) && precidence(peek) >= precidence(*str)) {
 				stackPop(infixStack, &peek);
 				stackPush(output, &peek);
 
 				//Update the peeked
 				stackPeek(infixStack, &peek);
 			}
-
 			stackPush(infixStack, str);
 		}
 	}
