@@ -24,7 +24,7 @@ nfa_state* createState(unsigned short condition, regex* regex) {
 	return state;
 }
 
-bool regexParse(regex* regexStructure, char const* input) {
+bool regexParsePostfix(regex* regexStructure, char const* input) {
 
 	generic_stack* stateStack = stackAllocate(sizeof(nfa_fragment*));
 	nfa_state *state, *state2;
