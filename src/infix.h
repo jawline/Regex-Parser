@@ -12,11 +12,11 @@
 /**
  * Insert . symbols into NFA's in an infix notation (so abc$ becomes a.b.c.$)
  */
-char* infixInsertExplicitConcatenation(char* str);
+char* infixInsertExplicitConcatenation(char const* str);
 
 /**
  * Convert a regular expression string in infix notation to postfix notation
  */
-char* infixToPostfix(char* str);
+char* infixToPostfix(char const* str);
 
 #endif //INFIX_H_
