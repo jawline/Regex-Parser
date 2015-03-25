@@ -23,7 +23,7 @@
  	return c >= 48 && c <= 57;
  }
 
-char nextChar(char* str) {
+char nextChar(char const* str) {
 	return *(str + 1);
 }
 
