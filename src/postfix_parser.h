@@ -10,6 +10,11 @@
 #include "regex.h"
 
 /**
+ * Parses a regex string in infix notation and populates a given regex
+ */
+bool regexParse(regex* regexStructure, char const* input);
+
+/**
  * Parses a regex string written in postfix notation and populates a given regexStructure with the results
  */
 bool regexParsePostfix(regex* regexStructure, char const* input);
