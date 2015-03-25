@@ -43,7 +43,7 @@ void stackExpand(generic_stack* stack, unsigned int size) {
 	stack->max = newSize;
 }
 
-void stackPush(generic_stack* stack, void* elem) {
+void stackPush(generic_stack* stack, void const* elem) {
 
 	if (stackFull(stack)) {
 		stackExpand(stack, 1024);
