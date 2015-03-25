@@ -17,9 +17,7 @@ void nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next)
 }
 
 bool nfaListMatches(nfa_list* nfa) {
-
 	unsigned int i;
-
 	for (i = 0; i < nfa->currentSize; i++) {
 		if (nfa->states[i]->target == 257) {
 			return true;
@@ -36,10 +34,11 @@ void nfaStateSwap(nfa_list** left, nfa_list** right) {
   *right = temp;
 }
 
-bool nfaMatches(nfa_state* nfa, char const* targetString) {
-
+size_t nfaMatches(nfa_state* nfa, char const* targetString) {
+	
 	nfa_list l1, l2;
 	nfa_list* currentStates, *nextStates;
+	char const* currentString = targetString;
 
 	nfaListAllocate(&l1, 1000);
 	nfaListAllocate(&l2, 1000);
@@ -49,10 +48,15 @@ bool nfaMatches(nfa_state* nfa, char const* targetString) {
 
 	nfaListStart(currentStates, nfa);
 
-	for (; *targetString; targetString++) {
+	for (; *currentString; currentString++) {
 		nfaBuildReachableStates(*targetString, currentStates, nextStates);
 		nfaStateSwap(&currentStates, &nextStates);
+		if (nfaListMatches(currentStates)) {
+			return currentString - targetString;
+		}
 	}
 
-	return nfaListMatches(currentStates);
+	if (nfaListMatches(currentStates)) {
+		return currentString - targetString;
+	}
 }
