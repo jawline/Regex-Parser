@@ -56,7 +56,5 @@ size_t nfaMatches(nfa_state* nfa, char const* targetString) {
 		}
 	}
 
-	if (nfaListMatches(currentStates)) {
-		return currentString - targetString;
-	}
+	return 0;
 }
