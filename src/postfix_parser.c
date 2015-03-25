@@ -10,6 +10,8 @@
 #include "nfa_fragment.h"
 #include "stack.h"
 #include "nfa.h"
+#include "postfix_parser.h"
+#include "infix.h"
 
 nfa_fragment* basicFragment(nfa_state* state) {
 	nfa_fragment* frag = nfaFragmentCreate();
