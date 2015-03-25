@@ -145,7 +145,7 @@ char* infixInsertExplicitConcatenation(char const* str) {
 	return result;
 }
 
-char* infixToPostfix(char* str) {
+char* infixToPostfix(char const* str) {
 
 	generic_stack* infixStack = stackAllocate(1);
 	generic_stack* output = stackAllocate(1);
