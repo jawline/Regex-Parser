@@ -6,11 +6,10 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
-#include "postfix_parser.h"
+#include "parser.h"
 #include "nfa_fragment.h"
 #include "stack.h"
 #include "nfa.h"
-#include "postfix_parser.h"
 #include "infix.h"
 
 nfa_fragment* basicFragment(nfa_state* state) {
