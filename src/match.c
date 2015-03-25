@@ -8,7 +8,6 @@ void nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next)
 	nfaListReset(next);
 
 	for (i = 0; i < current->currentSize; i++) {
-	
                 state = current->states[i];
 		if (state->path && (state->target == c || state->target == 258)) {
 			nfaListAddFollowPaths(next, state->path);
@@ -23,7 +22,6 @@ bool nfaListMatches(nfa_list* nfa) {
 			return true;
 		}
 	}
-
 	return false;
 }
 
