@@ -71,7 +71,7 @@ void handleInsertBetween(char c, char r, generic_stack* output) {
 	}
 }
 
-char* infixComputeBrackets(char* str, generic_stack* output) {
+char* infixComputeBrackets(char const* str, generic_stack* output) {
  
   char temp;
 
