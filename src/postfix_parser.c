@@ -24,6 +24,19 @@ nfa_state* createState(unsigned short condition, regex* regex) {
 	return state;
 }
 
+bool regexParse(regex* regexStructure, char const* input) {
+	char* infixWithConcatenations = infixInsertExplicitConcatenation(argv[1]);
+	printf("Infix with concatenations inserted %s\n", infixWithConcatenations);
+
+	char* postFix = infixToPostfix(infixWithConcatenations);
+	printf("Infix Conversion: %s\n", postFix);
+	free(infixWithConcatenations);
+
+	bool result = regexParse(regexStructure, postFix);
+	free(postFix);
+	return result;
+}
+
 bool regexParsePostfix(regex* regexStructure, char const* input) {
 
 	generic_stack* stateStack = stackAllocate(sizeof(nfa_fragment*));
