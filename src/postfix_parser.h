@@ -12,7 +12,7 @@
 /**
  * Parses a regex string written in postfix notation and populates a given regexStructure with the results
  */
-bool regexParse(regex* regexStructure, char const* input);
+bool regexParsePostfix(regex* regexStructure, char const* input);
 
 /**
  * Free all memory associated with the regex structure
