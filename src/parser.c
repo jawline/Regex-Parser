@@ -51,7 +51,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '&':
 			if (stackSize(stateStack) < 2) {
 				printf("ERROR: Stack does not carry enough fragments\n");
-				return;
+				return false;
 			}
 			//Pop the two sides of the concat
 			stackPop(stateStack, &t2);
@@ -75,7 +75,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '|':
 			if (stackSize(stateStack) < 2) {
 				printf("ERROR: Stack does not carry enough fragments\n");
-				return;
+				return false;
 			}
 			stackPop(stateStack, &t2);
 			stackPop(stateStack, &t1);
@@ -98,7 +98,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '+':
 			if (stackSize(stateStack) < 1) {
 				printf("ERROR: Stack does not carry enough fragments\n");
-				return;
+				return false;
 			}
 			stackPop(stateStack, &t1);
 
@@ -119,7 +119,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '*':
 			if (stackSize(stateStack) < 1) {
 				printf("ERROR: Stack does not carry enough fragments\n");
-				return;
+				return false;
 			}
 			stackPop(stateStack, &t1);
 
@@ -146,7 +146,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '?':
 			if (stackSize(stateStack) < 1) {
 				printf("ERROR: Stack does not carry enough fragments\n");
-				return;
+				return false;
 			}
 			stackPop(stateStack, &t1);
 
