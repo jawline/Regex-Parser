@@ -31,10 +31,12 @@ void nfaStateSwap(nfa_list** left, nfa_list** right) {
 }
 
 size_t nfaMatches(nfa_state* nfa, char const* targetString) {
+
+	unsigned int numReachable;
 	nfa_list l1, l2;
 	nfa_list* currentStates, *nextStates;
-	char const* currentString = targetString;
-	char const* longestMatch = currentString;
+	char const* current = targetString;
+	char const* longestMatch = 0;
 
 	nfaListAllocate(&l1, 1000);
 	nfaListAllocate(&l2, 1000);
@@ -44,15 +46,17 @@ size_t nfaMatches(nfa_state* nfa, char const* targetString) {
 
 	nfaListStart(currentStates, nfa);
 
-	for (; *currentString; currentString++) {
-		nfaBuildReachableStates(*targetString, currentStates, nextStates);
+	for (; *current; current++) {
+		numReachable = nfaBuildReachableStates(*current, currentStates, nextStates);
 		nfaStateSwap(&currentStates, &nextStates);
-		if (nfaListMatches(currentStates)) {
-			longestMatch = currentString;
-		} else if (longestMatch) {
+		//If no new states are reachable then the regex can't progress.
+		if (!numReachable) {
 			break;
+		}
+		if (nfaListMatches(currentStates)) {
+			longestMatch = current;
 		}
 	}
 
-	return longestMatch - targetString;
+	return longestMatch ? (longestMatch - targetString) + 1 : 0;
 }
