@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 
-	printf("%s\n", nfaMatches(reg.start, argv[2]) > 0 ? "matches" : "does not match");
+	printf("%s, %lu characters match from the start of the string\n", nfaMatches(reg.start, argv[2]) > 0 ? "matches" : "does not match", nfaMatches(reg.start, argv[2]));
 	regexFree(&reg);
 
 	return 1;
