@@ -26,6 +26,8 @@ nfa_state* createState(unsigned short condition, regex* regex) {
 }
 
 void cleanupStack(generic_stack* stateStack) {
+	nfa_fragment* t1;
+	
 	//Clear any remaining stack and print warnings
 	while (!stackEmpty(stateStack)) {
 		stackPop(stateStack, &t1);
