@@ -49,6 +49,10 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 	for (; *input; input++) {
 		switch (*input) {
 		case '&':
+			if (stackSize(stateStack) < 2) {
+				printf("ERROR: Stack does not carry enough fragments\n");
+				return;
+			}
 			//Pop the two sides of the concat
 			stackPop(stateStack, &t2);
 			stackPop(stateStack, &t1);
@@ -69,6 +73,10 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 			stackPush(stateStack, &t3);
 			break;
 		case '|':
+			if (stackSize(stateStack) < 2) {
+				printf("ERROR: Stack does not carry enough fragments\n");
+				return;
+			}
 			stackPop(stateStack, &t2);
 			stackPop(stateStack, &t1);
 
@@ -88,6 +96,10 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 			stackPush(stateStack, &t3);
 			break;
 		case '+':
+			if (stackSize(stateStack) < 1) {
+				printf("ERROR: Stack does not carry enough fragments\n");
+				return;
+			}
 			stackPop(stateStack, &t1);
 
 			state = createState(256, regexStructure);
@@ -105,6 +117,10 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 			stackPush(stateStack, &t3);
 			break;
 		case '*':
+			if (stackSize(stateStack) < 1) {
+				printf("ERROR: Stack does not carry enough fragments\n");
+				return;
+			}
 			stackPop(stateStack, &t1);
 
 			state2 = createState(256, regexStructure);
@@ -128,6 +144,10 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 			stackPush(stateStack, &t3);
 			break;
 		case '?':
+			if (stackSize(stateStack) < 1) {
+				printf("ERROR: Stack does not carry enough fragments\n");
+				return;
+			}
 			stackPop(stateStack, &t1);
 
 			state = createState(256, regexStructure);
