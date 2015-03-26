@@ -1,7 +1,8 @@
 #include "match.h"
 
-void nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next) {
+unsigned int nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next) {
 	unsigned int i;
+	unsigned int followed = 0;
 	nfa_state* state;
 
 	nfaListReset(next);
@@ -9,8 +10,10 @@ void nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next)
                 state = current->states[i];
 		if (state->path && (state->target == c || state->target == 258)) {
 			nfaListAddFollowPaths(next, state->path);
+			followed++;
 		}
 	}
+	return followed;
 }
 
 bool nfaListMatches(nfa_list* nfa) {
