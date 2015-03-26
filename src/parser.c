@@ -25,6 +25,16 @@ nfa_state* createState(unsigned short condition, regex* regex) {
 	return state;
 }
 
+void cleanupStack(generic_stack* stateStack) {
+	//Clear any remaining stack and print warnings
+	while (!stackEmpty(stateStack)) {
+		stackPop(stateStack, &t1);
+		printf("WARN: Stuff left in stack. Your regular expression sucks.\n");
+		nfaFragmentFree(t1);
+	}
+	stackFree(stateStack);
+}
+
 bool regexParse(regex* regexStructure, char const* input) {
 	char* infixWithConcatenations = infixInsertExplicitConcatenation(input);
 	printf("Infix with concatenations inserted %s\n", infixWithConcatenations);
@@ -51,6 +61,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '&':
 			if (stackSize(stateStack) < 2) {
 				printf("ERROR: Stack does not carry enough fragments\n");
+				cleanupStack(stateStack);
 				return false;
 			}
 			//Pop the two sides of the concat
@@ -75,6 +86,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '|':
 			if (stackSize(stateStack) < 2) {
 				printf("ERROR: Stack does not carry enough fragments\n");
+				cleanupStack(stateStack);
 				return false;
 			}
 			stackPop(stateStack, &t2);
@@ -98,6 +110,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '+':
 			if (stackSize(stateStack) < 1) {
 				printf("ERROR: Stack does not carry enough fragments\n");
+				cleanupStack(stateStack);
 				return false;
 			}
 			stackPop(stateStack, &t1);
@@ -119,6 +132,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '*':
 			if (stackSize(stateStack) < 1) {
 				printf("ERROR: Stack does not carry enough fragments\n");
+				cleanupStack(stateStack);
 				return false;
 			}
 			stackPop(stateStack, &t1);
@@ -146,6 +160,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 		case '?':
 			if (stackSize(stateStack) < 1) {
 				printf("ERROR: Stack does not carry enough fragments\n");
+				cleanupStack(stateStack);
 				return false;
 			}
 			stackPop(stateStack, &t1);
@@ -198,14 +213,7 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 	regexStructure->start = t3->start;
 	nfaFragmentFree(t3);
 
-	//Clear any remaining stack and print warnings
-	while (!stackEmpty(stateStack)) {
-		stackPop(stateStack, &t1);
-		printf("WARN: Stuff left in stack. Your regular expression sucks.\n");
-		nfaFragmentFree(t1);
-	}
-
-	stackFree(stateStack);
+	cleanupStack(stateStack);
 	return true;
 }
 
