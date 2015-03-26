@@ -145,6 +145,11 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 
 			stackPush(stateStack, &t3);
 			break;
+		case '$':
+			state = createState(257, regexStructure);
+			t3 = basicFragment(state);
+			stackPush(stateStack, &t3);
+			break;
 		case '.':
 			state = createState(258, regexStructure);
 			t3 = basicFragment(state);
