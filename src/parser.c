@@ -33,11 +33,9 @@ bool regexParse(regex* regexStructure, char const* input) {
 	printf("Infix Conversion: %s\n", postFix);
 	free(infixWithConcatenations);
 
-	bool result = regexParse(regexStructure, postFix);
-	/*free(postFix);
-	return result;*/
-
-	return false;
+	bool result = regexParsePostfix(regexStructure, postFix);
+	free(postFix);
+	return result;
 }
 
 bool regexParsePostfix(regex* regexStructure, char const* input) {
