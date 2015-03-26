@@ -29,10 +29,10 @@ bool regexParse(regex* regexStructure, char const* input) {
 	char* infixWithConcatenations = infixInsertExplicitConcatenation(input);
 	printf("Infix with concatenations inserted %s\n", infixWithConcatenations);
 
-/*	char* postFix = infixToPostfix(infixWithConcatenations);
+	char* postFix = infixToPostfix(infixWithConcatenations);
 	printf("Infix Conversion: %s\n", postFix);
 	free(infixWithConcatenations);
-
+/*
 	bool result = regexParse(regexStructure, postFix);
 	free(postFix);
 	return result;*/
