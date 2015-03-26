@@ -28,22 +28,20 @@ char nextChar(char const* str) {
 }
 
 int precidence(char c) {
-
 	switch (c) {
-	case '(':
-		return 1;
-	case ')':
-		return 1;
-	case '|':
-		return 2;
-	case '&':
-		return 3;
-	case '?':
-	case '*':
-	case '+':
-		return 5;
+		case '(':
+			return 1;
+		case ')':
+			return 1;
+		case '|':
+			return 2;
+		case '&':
+			return 3;
+		case '?':
+		case '*':
+		case '+':
+			return 5;
 	}
-
 	return 6;
 }
 
