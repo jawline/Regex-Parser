@@ -165,19 +165,20 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 	state = createState(257, regexStructure);
 	t3 = basicFragment(state);
 
-	stackPop(stateStack, &t1);
-	nfaFragmentPatch(t1, state);
+	//Patch it to the current stack state
+	if (!stackEmpty(stateStack)) {
+		stackPop(stateStack, &t1);
+		nfaFragmentPatch(t1, state);
+		nfaFragmentAddTail(t3, state);
+		t3->start = t1->start;
+		nfaFragmentFree(t1);
+	}
 
-	t3->start = t1->start;
-	nfaFragmentAddTail(t3, state);
+	//Mark the patched fragment as the regex structure start point
+	regexStructure->start = t3->start;
+	nfaFragmentFree(t3);
 
-	nfaFragmentFree(t1);
-	stackPush(stateStack, &t3);
-
-	stackPop(stateStack, &t1);
-	regexStructure->start = t1->start;
-	nfaFragmentFree(t1);
-
+	//Clear any remaining stack and print warnings
 	while (!stackEmpty(stateStack)) {
 		stackPop(stateStack, &t1);
 		printf("WARN: Stuff left in stack. Your regular expression sucks.\n");
@@ -189,12 +190,9 @@ bool regexParsePostfix(regex* regexStructure, char const* input) {
 }
 
 void regexFree(regex* regexStructure) {
-
 	unsigned int i;
-
 	for (i = 0; i < regexStructure->stateList.currentSize; i++) {
 		nfaStateFree(regexStructure->stateList.states[i]);
 	}
-
 	nfaListFree(&regexStructure->stateList);
 }
