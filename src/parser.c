@@ -32,10 +32,11 @@ bool regexParse(regex* regexStructure, char const* input) {
 	char* postFix = infixToPostfix(infixWithConcatenations);
 	printf("Infix Conversion: %s\n", postFix);
 	free(infixWithConcatenations);
-/*
+
 	bool result = regexParse(regexStructure, postFix);
-	free(postFix);
+	/*free(postFix);
 	return result;*/
+
 	return false;
 }
 
