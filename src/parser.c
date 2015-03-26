@@ -34,8 +34,9 @@ bool regexParse(regex* regexStructure, char const* input) {
 	free(infixWithConcatenations);
 
 	bool result = regexParse(regexStructure, postFix);
-	free(postFix);*/
-	return result;
+	free(postFix);
+	return result;*/
+	return false;
 }
 
 bool regexParsePostfix(regex* regexStructure, char const* input) {
