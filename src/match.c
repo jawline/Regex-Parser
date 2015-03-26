@@ -31,10 +31,10 @@ void nfaStateSwap(nfa_list** left, nfa_list** right) {
 }
 
 size_t nfaMatches(nfa_state* nfa, char const* targetString) {
-	
 	nfa_list l1, l2;
 	nfa_list* currentStates, *nextStates;
 	char const* currentString = targetString;
+	char const* longestMatch = currentString;
 
 	nfaListAllocate(&l1, 1000);
 	nfaListAllocate(&l2, 1000);
@@ -48,9 +48,11 @@ size_t nfaMatches(nfa_state* nfa, char const* targetString) {
 		nfaBuildReachableStates(*targetString, currentStates, nextStates);
 		nfaStateSwap(&currentStates, &nextStates);
 		if (nfaListMatches(currentStates)) {
-			return currentString - targetString;
+			longestMatch = currentString;
+		} else if (longestMatch) {
+			break;
 		}
 	}
 
-	return 0;
+	return longestMatch - targetString;
 }
