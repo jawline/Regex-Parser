@@ -1,5 +1,6 @@
 #include "nfa_list.h"
 #include <stdlib.h>
+#include <string.h>
 
 unsigned int listid = 0;
 unsigned int defaultGrowSize = 128;
