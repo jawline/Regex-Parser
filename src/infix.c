@@ -79,7 +79,6 @@ char const* infixComputeBrackets(char const* str, generic_stack* output) {
   str++;
 
   for (; *str && *str != ']'; str++) {
-
   	if (nextChar(str) == '-') {
   		handleInsertBetween(*str, *(str+2), output);
   		str += 2;
@@ -109,24 +108,18 @@ char* infixInsertExplicitConcatenation(char const* str) {
 	bool insertPlanned = false;
 
 	for (; *str; str++) {
-
 		if (*str == '[') {
 			str = infixComputeBrackets(str, output);
 			insertPlanned = true;
 		} else {
-
 			stackPush(output, str);
-
 			if (!isOperator(*str)) {
 				insertPlanned = true;
 			} else if (*str == '|') {
 				insertPlanned = false;
 			}
 		}
-
-
-		if (insertPlanned && nextChar(str) != '\0'
-				&& (nextChar(str) == '(' || !isOperator(nextChar(str)))) {
+		if (insertPlanned && nextChar(str) != '\0' && (nextChar(str) == '(' || !isOperator(nextChar(str)))) {
 			stackPush(output, "&");
 			insertPlanned = false;
 		}
@@ -139,15 +132,12 @@ char* infixInsertExplicitConcatenation(char const* str) {
 	strcpy(result, output->data);
 
 	stackFree(output);
-
 	return result;
 }
 
 char* infixToPostfix(char const* str) {
-
 	generic_stack* infixStack = stackAllocate(1);
 	generic_stack* output = stackAllocate(1);
-
 	char peek;
 	for (; *str; ++str) {
 		stackPeek(infixStack, &peek);
@@ -166,7 +156,6 @@ char* infixToPostfix(char const* str) {
 			while (!stackEmpty(infixStack) && precidence(peek) >= precidence(*str)) {
 				stackPop(infixStack, &peek);
 				stackPush(output, &peek);
-
 				//Update the peeked
 				stackPeek(infixStack, &peek);
 			}
