@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 unsigned int listid = 0;
+unsigned int defaultGrowSize = 128;
 
 void nfaListAllocate(nfa_list* list, int maxSize) {
 	list->states = malloc(sizeof(nfa_state*) * maxSize);
@@ -43,6 +44,9 @@ void nfaListGrow(nfa_list* list, unsigned int growSize) {
 }
 
 void nfaListAdd(nfa_list* list, nfa_state* state) {
+	if (list->currentSize == list->currentMax) {
+		nfaListGrow(list, defaultGrowSize);
+	}
 	list->states[list->currentSize++] = state;
 }
 
