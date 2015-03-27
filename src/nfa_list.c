@@ -5,7 +5,7 @@ unsigned int listid = 0;
 
 void nfaListAllocate(nfa_list* list, int maxSize) {
 	list->states = malloc(sizeof(nfa_state*) * maxSize);
-	nfaListReset(list);
+	nfaListReset(list, maxSize);
 }
 
 void nfaListFree(nfa_list* list) {
@@ -13,13 +13,14 @@ void nfaListFree(nfa_list* list) {
 	list->currentSize = 0;
 }
 
-void nfaListReset(nfa_list* list) {
+void nfaListReset(nfa_list* list, unsigned int currentMax) {
 	listid++;
 	list->currentSize = 0;
+	list->currentMax = currentMax;
 }
 
 void nfaListStart(nfa_list* list, nfa_state* state) {
-	nfaListReset(list);
+	nfaListReset(list, list->currentMax);
 	nfaListAddFollowPaths(list, state);
 }
 
