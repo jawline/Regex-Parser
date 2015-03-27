@@ -9,7 +9,8 @@
  */
 typedef struct nfa_list {
 	nfa_state** states;
-	int currentSize;
+	unsigned int currentSize;
+	unsigned int currentMax;
 } nfa_list;
 
 /**
@@ -20,7 +21,7 @@ void nfaListAllocate(nfa_list* list, int maxSize);
 /**
  * Reset the list, removing all items
  */
-void nfaListReset(nfa_list* list);
+void nfaListReset(nfa_list* list, unsigned int currentMax);
 
 /**
  * Start the list, resetting it before adding the given state
