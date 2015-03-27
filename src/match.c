@@ -5,7 +5,7 @@ unsigned int nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_lis
 	unsigned int followed = 0;
 	nfa_state* state;
 
-	nfaListReset(next);
+	nfaListReset(next, next->currentMax);
 	for (i = 0; i < current->currentSize; i++) {
                 state = current->states[i];
 		if (state->path && (state->target == c || state->target == 258)) {
@@ -41,8 +41,8 @@ size_t nfaMatches(nfa_state* nfa, char const* targetString) {
 	char const* current = targetString;
 	char const* longestMatch = 0;
 
-	nfaListAllocate(&l1, 1000);
-	nfaListAllocate(&l2, 1000);
+	nfaListAllocate(&l1, 128);
+	nfaListAllocate(&l2, 128);
 
 	currentStates = &l1;
 	nextStates = &l2;
@@ -52,6 +52,7 @@ size_t nfaMatches(nfa_state* nfa, char const* targetString) {
 	for (; *current; current++) {
 		numReachable = nfaBuildReachableStates(*current, currentStates, nextStates);
 		nfaStateSwap(&currentStates, &nextStates);
+
 		//If no new states are reachable then the regex can't progress.
 		if (!numReachable) {
 			break;
