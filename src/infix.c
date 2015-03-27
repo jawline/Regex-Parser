@@ -81,7 +81,7 @@ char const* infixComputeBrackets(char const* str, generic_stack* output) {
   for (; *str && *str != ']'; str++) {
   	if (nextChar(str) == '-') {
   		if (!*(str+1) || !*(str+2)) {
-  			printf("Error end of regex between brackets");
+  			printf("Error end of regex between brackets\n");
   			return 0;
   		}
   		handleInsertBetween(*str, *(str+2), output);
@@ -97,6 +97,11 @@ char const* infixComputeBrackets(char const* str, generic_stack* output) {
 	      stackPush(output, &temp);
 	    }
 	}
+  }
+  
+  if (!*str) {
+  	printf("Error, end of regex between brackets\n");
+  	return 0;
   }
 
   temp = ')';
