@@ -39,9 +39,16 @@ void cleanupStack(generic_stack* stateStack) {
 
 bool regexParse(regex* regexStructure, char const* input) {
 	char* infixWithConcatenations = infixInsertExplicitConcatenation(input);
+	if (!infixWithConcatenations) {
+		return false;
+	}
 	printf("Infix with concatenations inserted %s\n", infixWithConcatenations);
 
 	char* postFix = infixToPostfix(infixWithConcatenations);
+	if (!postFix) {
+		free(infixWithConcatenations);
+		return false;
+	}
 	printf("Infix Conversion: %s\n", postFix);
 	free(infixWithConcatenations);
 
