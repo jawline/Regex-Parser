@@ -49,14 +49,17 @@ bool isOperator(char c) {
 	return precidence(c) != 6;
 }
 
-void handleInsertBetween(char c, char r, generic_stack* output) {
+bool handleInsertBetween(char c, char r, generic_stack* output) {
 
 	char temp;
 	char iter;
 
 	if (r <= c) {
 		printf("Cannot insert between %c and %c\n", c, r);
+		return false;
 	}
+
+	printf("Computing between\n");
 
 	if ((isUppercase(c) && isUppercase(r)) || (isLowercase(c) && isLowercase(r)) || (isNumeric(c) && isNumeric(r))) {
 		for (iter = c; iter <= r; iter++) {
@@ -66,7 +69,10 @@ void handleInsertBetween(char c, char r, generic_stack* output) {
 				stackPush(output, &temp);
 			}
 		}
+		return true;
 	}
+	
+	return false;
 }
 
 char const* infixComputeBrackets(char const* str, generic_stack* output) {
@@ -84,7 +90,10 @@ char const* infixComputeBrackets(char const* str, generic_stack* output) {
   			printf("Error end of regex between brackets\n");
   			return 0;
   		}
-  		handleInsertBetween(*str, *(str+2), output);
+  		if (!handleInsertBetween(*str, *(str+2), output)) {
+  			printf("Could not insert between %c and %c\n", *str, *str+2);
+  			return 0;
+  		}
   		str += 2;
   		if (nextChar(str) && nextChar(str) != ']') {
   			temp = '|';
