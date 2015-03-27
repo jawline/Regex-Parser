@@ -1,8 +1,7 @@
 #include "match.h"
 
 unsigned int nfaBuildReachableStates(unsigned char c, nfa_list* current, nfa_list* next) {
-	unsigned int i;
-	unsigned int followed = 0;
+	unsigned int i, followed = 0;
 	nfa_state* state;
 
 	nfaListReset(next, next->currentMax);
