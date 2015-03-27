@@ -23,7 +23,7 @@
  	return c >= 48 && c <= 57;
  }
 
-char nextChar(char const* str) {
+short nextChar(char const* str) {
 	return *(str + 1);
 }
 
@@ -80,6 +80,10 @@ char const* infixComputeBrackets(char const* str, generic_stack* output) {
 
   for (; *str && *str != ']'; str++) {
   	if (nextChar(str) == '-') {
+  		if (!*(str+1) || !*(str+2)) {
+  			printf("Error end of regex between brackets");
+  			return 0;
+  		}
   		handleInsertBetween(*str, *(str+2), output);
   		str += 2;
   		if (nextChar(str) && nextChar(str) != ']') {
@@ -110,6 +114,10 @@ char* infixInsertExplicitConcatenation(char const* str) {
 	for (; *str; str++) {
 		if (*str == '[') {
 			str = infixComputeBrackets(str, output);
+			if (!str) {
+				stackFree(output);
+				return 0;
+			}
 			insertPlanned = true;
 		} else {
 			stackPush(output, str);
