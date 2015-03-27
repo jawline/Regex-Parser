@@ -37,7 +37,7 @@ bool nfaListContains(nfa_list* list, nfa_state* state) {
 }
 
 void nfaListGrow(nfa_list* list, unsigned int growSize) {
-	unsigned char* mem = malloc(sizeof(nfa_state) * (list->currentMax + growSize));
+	nfa_state** mem = malloc(sizeof(nfa_state*) * (list->currentMax + growSize));
 	memcpy(mem, list->states, sizeof(nfa_state) * list->currentMax);
 	free(list->states);
 	list->states = mem;
