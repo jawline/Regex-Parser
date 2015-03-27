@@ -13,7 +13,7 @@ typedef struct nfa_list {
 } nfa_list;
 
 /**
- * Create an ew NFA list
+ * Create a new NFA list
  */
 void nfaListAllocate(nfa_list* list, int maxSize);
 
