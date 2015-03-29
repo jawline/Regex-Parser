@@ -57,6 +57,9 @@ bool regexParse(regex* regexStructure, char const* input) {
 	return result;
 }
 
+/**
+ * TODO: I am broken. Double free's occuring (Using free'd memory) 
+ */
 bool regexParsePostfix(regex* regexStructure, char const* input) {
 
 	generic_stack* stateStack = stackAllocate(sizeof(nfa_fragment*));
