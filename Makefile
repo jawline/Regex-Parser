@@ -3,6 +3,7 @@ OUTPUT_DIR  = ./bin/
 OUTPUT_FILE = regexpm
 OUTPUT_LIB  = libregexpm.so
 EXECUTABLE  = $(OUTPUT_DIR)$(OUTPUT_FILE)
+LIBRARY     = $(OUTPUT_DIR)$(OUTPUT_LIB)
 
 #Directory information
 OBJ_DIR=obj
