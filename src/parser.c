@@ -11,6 +11,7 @@
 #include "stack.h"
 #include "nfa.h"
 #include "infix.h"
+#include "debugPrint.h"
 
 nfa_fragment* basicFragment(nfa_state* state) {
 	nfa_fragment* frag = nfaFragmentCreate();
@@ -42,14 +43,14 @@ bool regexParse(regex* regexStructure, char const* input) {
 	if (!infixWithConcatenations) {
 		return false;
 	}
-	printf("Infix with concatenations inserted %s\n", infixWithConcatenations);
+	DEBUG_PRINT("Infix with concatenations inserted %s\n", infixWithConcatenations);
 
 	char* postFix = infixToPostfix(infixWithConcatenations);
 	if (!postFix) {
 		free(infixWithConcatenations);
 		return false;
 	}
-	printf("Infix Conversion: %s\n", postFix);
+	DEBUG_PRINT("Infix Conversion: %s\n", postFix);
 	free(infixWithConcatenations);
 
 	bool result = regexParsePostfix(regexStructure, postFix);
