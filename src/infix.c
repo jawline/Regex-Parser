@@ -59,8 +59,6 @@ bool handleInsertBetween(char c, char r, generic_stack* output) {
 		return false;
 	}
 
-	printf("Computing between\n");
-
 	if ((isUppercase(c) && isUppercase(r)) || (isLowercase(c) && isLowercase(r)) || (isNumeric(c) && isNumeric(r))) {
 		for (iter = c; iter <= r; iter++) {
 			stackPush(output, &iter);
