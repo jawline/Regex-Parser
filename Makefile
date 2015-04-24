@@ -14,7 +14,7 @@ INSTALL_INCLUDE_PATH = /usr/local/include/regexpm/
 
 #Compiler settings
 CC=gcc
-CFLAGS=-c -Wall -ggdb
+CFLAGS=-c -Wall -ggdb -fPIC
 LDFLAGS=-ggdb
 
 #Rules to find source code - NOTE: Look for a better way to scan directories. Nonrecursive works but is a bit ugly
