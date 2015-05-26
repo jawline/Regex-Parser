@@ -17,7 +17,7 @@ CC=gcc
 CFLAGS=-c -Wall -ggdb -fPIC
 LDFLAGS=-ggdb
 
-#Rules to find source code - NOTE: Look for a better way to scan directories. Nonrecursive works but is a bit ugly
+#Rules to find source code
 SOURCES=$(shell find src/ -type f -name '*.c')
 HEADERS=$(shell find src/ -type f -name '*.h')
 OBJECTS=$(patsubst %.c,obj/%.o,$(SOURCES))
