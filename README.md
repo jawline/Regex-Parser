@@ -1,4 +1,5 @@
-A regexular expression string matcher
+# Regexp
+A regular expression string matcher
 
 Regex is passed as infix with a $ to signal matching.
 

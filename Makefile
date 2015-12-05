@@ -29,7 +29,7 @@ CC=gcc
 CFLAGS=-c -Wall -ggdb -fPIC
 LDFLAGS=-ggdb
 
-#Rules to find source code - NOTE: Look for a better way to scan directories. Nonrecursive works but is a bit ugly
+#Rules to find source code
 SOURCES=$(shell find src/ -type f -name '*.c')
 HEADERS=$(shell find src/ -type f -name '*.h')
 OBJECTS=$(patsubst %.c,obj/%.o,$(SOURCES))
@@ -39,7 +39,7 @@ all: preprocess $(SOURCES) $(EXECUTABLE) $(LIBRARY)
 install:
 	@cp $(EXECUTABLE) $(INSTALL_EXE_PATH)$(OUTPUT_FILE)
 	@cp $(LIBRARY) $(INSTALL_LIB_PATH)$(OUTPUT_LIB)
-	@mkdir $(INSTALL_INCLUDE_PATH)
+	@mkdir -p $(INSTALL_INCLUDE_PATH)
 	@cp $(HEADERS) $(INSTALL_INCLUDE_PATH)
 
 remove:

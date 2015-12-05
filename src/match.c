@@ -60,6 +60,9 @@ size_t nfaMatches(nfa_state* nfa, char const* targetString) {
 			longestMatch = current;
 		}
 	}
+	
+	nfaListFree(&l1);
+	nfaListFree(&l2);
 
 	return longestMatch ? (longestMatch - targetString) + 1 : 0;
 }
