@@ -1,7 +1,19 @@
+ifeq "$(OS)" ""
+	OS = $(shell uname -s)
+endif
+
 #Output executable
 OUTPUT_DIR  = ./bin/
 OUTPUT_FILE = regexpm
-OUTPUT_LIB  = libregexpm.so
+
+OUTPUT_LIB_NAME  = regexpm
+
+ifeq "$(OS)" "Darwin"
+	OUTPUT_LIB = lib$(OUTPUT_LIB_NAME).dylib
+else
+	OUTPUT_LIB = lib$(OUTPUT_LIB_NAME).so
+endif
+
 EXECUTABLE  = $(OUTPUT_DIR)$(OUTPUT_FILE)
 LIBRARY     = $(OUTPUT_DIR)$(OUTPUT_LIB)
 
@@ -14,7 +26,7 @@ INSTALL_INCLUDE_PATH = /usr/local/include/regexpm/
 
 #Compiler settings
 CC=gcc
-CFLAGS=-c -Wall -ggdb
+CFLAGS=-c -Wall -ggdb -fPIC
 LDFLAGS=-ggdb
 
 #Rules to find source code - NOTE: Look for a better way to scan directories. Nonrecursive works but is a bit ugly
@@ -27,6 +39,7 @@ all: preprocess $(SOURCES) $(EXECUTABLE) $(LIBRARY)
 install:
 	@cp $(EXECUTABLE) $(INSTALL_EXE_PATH)$(OUTPUT_FILE)
 	@cp $(LIBRARY) $(INSTALL_LIB_PATH)$(OUTPUT_LIB)
+	@mkdir $(INSTALL_INCLUDE_PATH)
 	@cp $(HEADERS) $(INSTALL_INCLUDE_PATH)
 
 remove:
